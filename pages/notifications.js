@@ -28,39 +28,49 @@ function checkOrder() {
     dessert: basket.dessert.name !== ""
   };
 
-
-
-  if (!selectedDishes.soup && !selectedDishes["main-course"] && !selectedDishes.salad && !selectedDishes.drink && !selectedDishes.dessert) {
-    return "Ничего не выбрано. Выберите блюда для заказа";
+    if (
+      !selectedDishes.soup &&
+      !selectedDishes["main-course"] &&
+      !selectedDishes.salad &&
+      !selectedDishes.drink &&
+      !selectedDishes.dessert
+    ) {
+      return "Ничего не выбрано. Выберите блюда для заказа";
+    }
+  
+    // Если выбраны все необходимые блюда, кроме напитка
+    if (
+      selectedDishes.soup &&
+      (selectedDishes["main-course"] || selectedDishes.salad) &&
+      !selectedDishes.drink
+    ) {
+      return "Выберите напиток";
+    }
+  
+    // Если выбран суп, но не выбраны главное блюдо или салат
+    if (selectedDishes.soup && !selectedDishes["main-course"] && !selectedDishes.salad) {
+      return "Выберите главное блюдо или салат";
+    }
+  
+    // Если выбран салат, но не выбраны суп или главное блюдо
+    if (selectedDishes.salad && !selectedDishes.soup && !selectedDishes["main-course"]) {
+      return "Выберите суп или главное блюдо";
+    }
+  
+    // Если выбран только напиток или десерт (без других обязательных блюд)
+    if (
+      (selectedDishes.drink || selectedDishes.dessert) &&
+      !selectedDishes.soup &&
+      !selectedDishes["main-course"] &&
+      !selectedDishes.salad
+    ) {
+      return "Выберите главное блюдо";
+    }
+  
+    // Если все условия выполнены, уведомление отсутствует
+    return null;
   }
   
-  if (selectedDishes.dessert && !selectedDishes.soup && !selectedDishes["main-course"] && !selectedDishes.salad && !selectedDishes.drink) {
-    return "Только десерт заказать нельзя. Выберите другие блюда.";
-  }
-  
-  if (!selectedDishes.drink) {
-    return "Выберите напиток";
-  }
-  
-  // Позволяем выбрать суп и салат без основного блюда
-  if (selectedDishes.soup && !selectedDishes["main-course"] && !selectedDishes.salad) {
-    return "Выберите главное блюдо или добавьте салат";
-  }
-  
-  // Позволяем выбрать салат и суп вместе
-  if (selectedDishes.salad && (!selectedDishes.soup && !selectedDishes["main-course"])) {
-    return "Выберите суп или главное блюдо";
-  }
-  
-  // Условие для основного блюда
-  if (!selectedDishes["main-course"] && (selectedDishes.soup || selectedDishes.salad)) {
-    return "Выберите главное блюдо";
-  }
-  
-// Если все условия соблюдены, возвращаем null
-return null;
-
-}
 
 // Обработчик отправки формы
 document.querySelector("form").addEventListener("submit", (event) => {
