@@ -46,6 +46,10 @@ function checkOrder() {
     ) {
       return "Выберите напиток";
     }
+
+    if (!selectedDishes.drink) {
+      return "Выберите напиток";
+  }
   
     // Если выбран суп, но не выбраны главное блюдо или салат
     if (selectedDishes.soup && !selectedDishes["main-course"] && !selectedDishes.salad) {
